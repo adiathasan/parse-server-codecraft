@@ -4,22 +4,49 @@ Parse.initialize('app');
 
 Parse.serverURL = 'http://localhost:1337/parse';
 
-const User = Parse.Object.extend('User');
+const Test = Parse.Object.extend('Test');
 
-const user = new User();
+const Comment = Parse.Object.extend('Comment');
 
-const q = new Parse.Query('User');
+const comment = new Comment();
 
-q.equalTo('username', 'adiat');
+const test = new Test();
 
-q.containedIn('username', ['adiat']);
+const q = new Parse.Query(test);
+
+const data = {
+	name: 'ratul',
+	age: 23,
+	pointer: 'x1LqJyj6hX',
+};
+
+// test
+// 	.save(data)
+// 	.then((obj) => {
+// 		return q.get(obj.id);
+// 	})
+// 	.then((obj) => {
+// 		obj.set('name', 'lula');
+// 		return obj.save();
+// 	})
+// 	.then(() => {
+// 		comment.set('message', 'Awesome test');
+// 		comment.set('parent', test);
+// 		return comment.save();
+// 	})
+// 	.then((obj) => {
+// 		console.log('success on created', obj);
+// 	})
+// 	.catch((err) => {
+// 		console.log(err);
+// 	});
 
 q.find()
-	.then((users) => {
-		users.map((user) => {
-			console.log(user.get('username'));
-		});
+	.then((tests) => {
+		tests[2].increment('age');
+		return tests[2].save();
 	})
-	.catch((err) => {
-		console.log(err);
+	.then((test) => {
+		const { name, age } = test.attributes;
+		console.log(name, age, test.id);
 	});
